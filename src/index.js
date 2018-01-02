@@ -1,56 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+//import React from 'react';
 import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
 
 
 import {createStore} from 'redux'
-import {Provider} from 'react-redux'
 
+const cautionAction = {
+    type: 'caution',
+    text: 'caution text'
 
-/*
-* 专门负责数据的 函数
-* state 被修改的对象
-* action 修改的值的对象
-* */
-const stateChanger = (action) => {
+};
 
-    switch (action.type) {
-        case 'UPDATE_TITLE_TEXT':
-            appState.title.text = action.text
-            break
-        case 'UPDATE_TITLE_COLOR':
-            appState.title.color = action.color
-            break
-        default:
-            break
-    }
-}
+const goAction = {
+    type: 'go',
+    text: 'go text'
+};
 
-function createTitleAction(str) {
-
-    return{
-        type:'UPDATE_TITLE_TEXT',
-        text:str
-    }
+const stopAction = {
+    type: 'stop',
+    text: 'stop text'
 }
 
 
-const appState = {
-    title: {
-        text: 'React.js 小书',
-        color: 'red',
-    },
-    content: {
-        text: 'React.js 小书内容',
-        color: 'blue'
-    }
-}
-
-function renderApp(appState) {
-    renderTitle(appState.title)
-    renderContent(appState.content)
+function renderApp(action) {
+    renderTitle(goAction.text)
+    renderContent(goAction.text)
 }
 
 function renderTitle(title) {
@@ -65,16 +38,36 @@ function renderContent(content) {
     contentDOM.style.color = content.color
 }
 
-renderApp(appState)
+var createGoAction = (text) => {
+    return {
+        type: 'go',
+        text: text
+    }
+}
 
+const reducer = (state, action) => {
 
-let store = createStore(stateChanger);
+    switch (action.type) {
+        case 'go':
+            state = action.text
+            break;
+        case 'stop':
+            state = action.text
+        case 'caution':
+            state = action.text
+            break;
+        default :
+            return state = ''
+            break
+    }
+    let titleDom = document.getElementById('title');
+    titleDom.innerHTML = state
+    return state;
+}
 
-//let action = createTitleAction('555');
+let store = createStore(reducer);
+store.dispatch(createGoAction('55555'))
+store.subscribe(()=>{
+    console.log('change======sub')
+})
 
-//console.log(createTitleAction('555'))
-//store.dispatch(createTitleAction('555'))
-
-
-
-//store.dispatch(appState,{type: 'UPDATE_TITLE_TEXT', title: 'haha'})
