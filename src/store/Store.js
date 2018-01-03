@@ -7,10 +7,24 @@ import React, {Component} from 'react';
 * */
 class Store extends Component {
 
+    appState = {
+
+        title: {
+            text: 'React.js 小书',
+            color: 'red',
+        },
+        content: {
+            text: 'React.js 小书内容',
+            color: 'blue'
+        }
+    }
+
     static createStore(state, stateChanger) {
 
+        const getState = () => state
         const dispatch = (action) => stateChanger(state, action)
-        return {state, dispatch}
+
+        return {getState, dispatch}
     }
 
 
